@@ -15,10 +15,10 @@ const register = async (req, res) => {
         await user.save();
 
         res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Usuario registrado exitosamente' }));
+        return res.end(JSON.stringify({ message: 'Usuario registrado exitosamente' }));
     } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Error al registrar usuario', error: err.message }));
+        return res.end(JSON.stringify({ message: 'Error al registrar usuario', error: err.message }));
     }
 };
 // Login de usuario
@@ -32,10 +32,10 @@ const login = async (req, res) => {
         }
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Login exitoso', token }));
+        return res.end(JSON.stringify({ message: 'Login exitoso', token }));
     } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Error al iniciar sesión', error: err.message }));
+        return res.end(JSON.stringify({ message: 'Error al iniciar sesión', error: err.message }));
     }
 };
 

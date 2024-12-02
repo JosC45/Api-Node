@@ -1,11 +1,12 @@
-const Mongoose=require('mongoose')
-const Music=require('./music')
-const singerSchema=new Mongoose.Schema({
+const mongoose=require('mongoose')
+const Music=require('./music');
+
+const singerSchema=new mongoose.Schema({
     name:{type:String,required:true},
     nacionality:{type:String},
-    themes:[{type:Mongoose.Schema.Types.ObjectId, ref:"Music"}]
-},{strict:false})
+    themes: [{ type: mongoose.Schema.Types.Mixed}],
+});
 
-const Singer=Mongoose.model("Singer",singerSchema)
+const Singer=mongoose.model("Singer",singerSchema)
 
 module.exports=Singer;
