@@ -1,4 +1,9 @@
 const {postSinger}=require("../controllers/musiccontroller")
+const {postMusic}=require("../controllers/musiccontroller")
+const {getMusic}=require("../controllers/musiccontroller")
+const {deleteMusic}=require("../controllers/musiccontroller")
+const {updateMusic}=require("../controllers/musiccontroller")
+const {patchMusic}=require("../controllers/musiccontroller")
 const bodyParser = require("../middlewares/bodyparser")
 const authvalidation=require("../middlewares/jwsvalidation")
 const {getSinger}=require("../controllers/musiccontroller")
@@ -45,6 +50,58 @@ const routesSinger=(req,res)=>{
             })
         }
     }
+    else if(req.url==="/sing/postMusic" && req.method==="POST"){
+        authvalidation(req,res,()=>{
+            bodyParser(req,res,()=>{
+                postMusic(req,res)
+            })
+        })
+    }
+    else if(req.url.startsWith("/sing/getMusic") && req.method==="GET"){
+        const parsedURL=new URL(req.url,`http://${req.headers.host}`)
+        const id=parsedURL.searchParams.get('id');
+        console.log("ID recibido:",id)
+        if(id){
+            authvalidation(req,res,()=>{
+                
+                    getMusic(req,res,id)
+                
+            })
+        }else{
+            authvalidation(req,res,()=>{
+                
+                    getMusic(req,res)
+                
+            })
+        }
+
+    }
+
+    else if(req.url.startsWith("/sing/deleteMusic") && req.method==="DELETE"){
+        const parsedUrl=new URL(req.url,`http://${req.headers.host}`)
+        const id=parsedUrl.searchParams.get('id');
+        authvalidation(req,res,()=>{
+            deleteMusic(req,res,id)
+        })
+    }
+    else if(req.url.startsWith("/sing/putMusic") && req.method==="PUT"){
+        const parsedUrl=new URL(req.url,`http://${req.headers.host}`)
+        const id=parsedUrl.searchParams.get('id');
+        authvalidation(req,res,()=>{
+            bodyParser(req,res,()=>{
+                updateMusic(req,res,id)
+            })
+        })
+    }
+    // else if(req.url.startsWith("/sing/patchMusic") && req.method==="PATCH"){
+    //     const parsedURL=new URL(req.url,`https://${req.headers.host}`)
+    //     const id=parsedURL.searchParams.get('id');
+    //     authvalidation(req,res,()=>{
+    //         bodyParser(req,res,()=>{
+    //             patchMusic(req,res,id)
+    //         })
+    //     })
+    // }
     
     else{
         res.writeHead(404,{"Content-Type":"application/json"})
